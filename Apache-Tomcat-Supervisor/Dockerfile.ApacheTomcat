@@ -1,0 +1,29 @@
+
+FROM dockerlife2023/oraclelinux:211223
+ENV container docker
+ENV REFRESHED_AT 25-Dec-2023
+
+COPY Dockerfile /root/Dockerfile.ApacheTomcat
+COPY runscript /root/runscript.ApacheTomcat
+##################################
+
+####################################
+# Configure openssh
+COPY apache-tomcat-8.5.97.tar.gz /opt
+RUN yum -y install java-11-openjdk.x86_64 \
+                    java-11-openjdk-devel.x86_64 \
+                    && mv /opt/apache-tomcat-8.5.97.tar.gz  /tmp/  \
+                    && cd /tmp \
+                    && tar -xvzf apache-tomcat-8.5.97.tar.gz    \
+                   && mkdir /usr/local/tomcat \
+                   && cp -Rv /tmp/apache-tomcat-8.5.97/*  /usr/local/tomcat/ 
+                    
+
+
+
+
+#########################
+
+ADD supervisord.conf /etc/supervisord.conf
+CMD ["/usr/bin/supervisord"]
+

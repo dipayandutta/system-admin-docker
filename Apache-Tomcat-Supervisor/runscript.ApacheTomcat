@@ -1,0 +1,11 @@
+docker run -dit \
+--network ktp-bridge-net-34-x \
+--ip 192.168.34.20 \
+--name ApacheTomcatJava \
+--hostname ApacheTomcatJava \
+-v $PWD:/myshare \
+-v $PWD/Application:/usr/local/tomcat/webapps \
+-v /dev/shm:/dev/shm \
+-v /etc/localtime:/etc/localtime:ro \ 
+-p 80:8080 \
+dockerlife2023/oraclelinux:ApacheTomcat-251223

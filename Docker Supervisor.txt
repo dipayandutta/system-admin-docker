@@ -1,0 +1,15 @@
+Docker Supervisor
+--------------------------
+
+https://github.com/SpaceShaman/supervisord-docker/tree/master
+https://riptutorial.com/docker/example/14132/dockerfile-plus-supervisord-conf
+https://kuldeeparya.wordpress.com/tag/how-to-run-ssh-and-apache2-in-docker-container/
+https://serversforhackers.com/c/div-running-multiple-processes
+https://www.youtube.com/watch?v=udgZ_NvARLs
+
+
+supervisor tutorial
+----------------------------
+https://www.youtube.com/watch?v=KPCSh79GCCE
+https://blog.jcharistech.com/2023/03/18/supervisor-a-process-management-tool-in-python/
+https://www.youtube.com/watch?v=ZTakClPYg-s
