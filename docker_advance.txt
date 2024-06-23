@@ -1,0 +1,9 @@
+check container process and memory utilisation
+-------------------------------------------------
+docker stats $(docker ps|grep -v "NAMES"|awk '{ print $NF }'|tr "\n" " ") --no-stream
+
+
+
+List Containers whose memory utilization is Greater than 99%
+--------------------------------------------------------------
+docker stats $(docker ps|grep -v "NAMES"|awk '{ print $NF }'|tr "\n" " ") --no-stream | sort -k 8n | awk '(NR>1) && ($8 > 99 ) '
