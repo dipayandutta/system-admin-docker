@@ -16,23 +16,3 @@ docker run -u developer -it --rm ubuntu:18.04
 run and delete for testing
 ----------------------------------
 docker run -u developer -it --rm   ubuntu:18.04 /bin/bash
-
-
-set UID binary excalation privilege protection
----------------------------------------------------
-docker run -u developer -it --rm --security-opt=no-new-privileges ubuntu:18.04 /bin/bash
-
-
-Specify Kernel functionality or Capabilities
---------------------------------------------------
-docker run --cap-drop all --cap-add NET_ADMIN -it --rm -u developer ubuntu:18.04 /bin/bash
-
-
-Read-only Docker
--------------------
-docker run --read-only -u developer -it --rm ubuntu:18.04 /bin/bash
-
-
-Temporary File system (Only Specified directory can create files)
---------------------------------------------------------------------
-docker run --read-only  --tmpfs /opt  -it --rm ubuntu:18.04 /bin/bash

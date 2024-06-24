@@ -1,0 +1,242 @@
+Link for Learning -->https://www.youtube.com/@GouravSharma/playlists
+
++++++++++++-------------------++++++++++++++++++
+************************************************
++++++++++++-------------------+++++++++++++++++++
+
+Docker swarm 3 node 
+--------------------------------
+
+master node
+------------------
+docker info | grep swarm
+
+docker swarm init
+
+docker node ls --> List of nodes avaliable in the cluster
+
+
+slave01
+---------------
+docker swarm join --token {} <master IP Address>
+
+slave02
+------------
+docker swarm join --token {} <master IP Address>
+
+
+[+++] Add new  worker node in the cluster [++++]
+---------------------------------------------
+
+docker swarm join-token worker
+
+
+[+++] Add new master node in the cluster [+++]
+----------------------------------------------
+
+docker swarm join-token manager
+
+
+[+++] Remove added worker node from the cluster [+++]
+-------------------------------------------------------
+
+worker-2
+=============
+docker swarm leave
+
+
+manager
+==================
+
+docker node rm worker02
+
+docker node rm -f worker01
+
+
+
+[+++] Docker node promote from worker node to manager node [+++]
+----------------------------------------------------------------
+
+docker node promote worker01 worker02 
+
+
+[+++] Docker node demote from manager node to worker node [+++]
+-----------------------------------------------------------------
+
+docker noder demote worker01 worker02
+
+
+
+[+++] Docker service [+++]
+---------------------------
+On the manager node
+---------------------
+[Refresh output after 10 s]
+watch docker container ls 
+
+
+docker service create -d alpine ping {IP}
+
+docker service ls --> will list the created services 
+
+docker service logs  
+
+
+create replicas 
+------------------
+
+docker service create -d --replicas 4 <image name> <command>
+
+
+docker service ps 
+
+
+[+++]docker server scale[+++]
+----------------------------------
+
+docker service create -d --replocas 2 alpine ping <IP>
+
+
+docker service scale <ID>=<number of replicas>
+
+
+docker service create -d -p 8090:80 nginx 
+
+docker service scale <ID>=<number of replicas>
+
+
+[+++]Running Each Instance in every cluster node [+++]
+---------------------------------------------------------
+
+ --{Docker Visualizer}--
+docker service create --name=viz --publish=8080:8080/tcp --constraint=node.role=manager \
+--mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+dockersamples/visualizer
+
+
+docker service create --mode=global <container name> <command>
+
+
+[+++] Running Instances only on the Manager Node [+++]
+--------------------------------------------------------
+
+
+docker service create --replica=3 --constraint="node.role==manager" alpine ping {IP Address}
+
+
+
+[+++] Running Instances only on the worker Node [+++]
+-------------------------------------------------------
+
+docker service create --replica=10 --constraint="node.role==worker" alpine ping {IP Address}
+
+
+
+[+++]Add label to the docker worker node[+++]
+------------------------------------------------
+
+let the scenario is worker01 node has ssd , so run high IO in this node
+
+docker node update --label-add="ssd=true" worker01 <-- This command runs only on master
+
+
+docker service create --constraint="node.labels.ssd==true" --replicas=2 -d alpine ping {IP}
+
+
+[-->] Assign container label from the worker node
+-------------------------------------------------
+
+
+/etc/docker 
+vim daemon.json
+{
+	"lables" : ["name=helloworld"]
+}
+
+restart the service
+
+service docker restart
+
+
+docker service create --constraint="engine.lables.name==helloworld" --replicas=3 -d <container> <command>
+
+
+
+**** Docker lables can be assigned Two(02) Types ***
+node label = form the manager node
+engine label = form the worker node
+
+
+[+++] Docker node availability [+++]
+----------------------------------------------
+
+Avalibilty are three types 
+1) Active (default status)
+2) pause
+3) drain
+
+
+from the manager
+
+docker node update --availability=pause worker2
+
+
+while use the status=drain
+
+all the containers of the drain node shift to the other active nodes(Now the system can be patched or maintainance can be done)
+
+docker node update --availibility=drain worker2
+
+
+
+[+++] Docker service limit cpu and memory [+++]
+-------------------------------------------------
+
+docker service create --help | grep reserve
+
+
+docker service create -d --replicas=3 -p 8080:80 nginx 
+
+ docker service ls 
+
+docker service update --image <container_name> <ID>
+
+
+
+[+++] Docker secret [+++]
+----------------------------
+
+where to use ?
+	information that must not share over the network
+
+
+docker secret create dbpass -
+--> Enter Your Password Ctrl+D
+
+docker secret ls 
+
+docker secret inspect dbpass
+
+create secret password from a file 
+---------------------------------
+
+docker secret create mytestfile <filename>
+
+
+docker service create -d --secret dbpass alpine ping 8.8.8.8
+
+now go to the node where the container is running 
+
+docker container exec -it <ID> /bin/bash
+
+cd /run/secrets
+ls
+
+
+using docker secret for database
+
+docker service create -d --secret dbpass -e MYSQL_ROOT_PASSWORD_FILE=/run/secrests/dbpass mysql
+
+
+
+overlay network -->https://www.youtube.com/watch?v=uoI4d0Ayorg&list=PL6XT0grm_TfgFoPHrdUFibPUPhDLEEEAq&index=13

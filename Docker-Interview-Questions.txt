@@ -1,0 +1,119 @@
+[**] What is Namespace [**]
+----------------------------
+A namespace in Docker is a feature that isolates a container's processes from the host system and other containers. Namespaces provide a layer of security and allow containers to run independently of each other.
+
+
+[++]There are six types of namespaces in Docker:
+    -------------------------------------------
+Mount namespace:
+-----------------
+Isolates the container's filesystem from the host system and other containers.
+
+Network namespace:
+------------------
+Isolates the container's network interface from the host system and other containers.
+
+Process namespace:
+--------------------
+Isolates the container's process IDs from the host system and other containers.
+
+IPC namespace:
+--------------
+Isolates the container's inter-process communication (IPC) mechanisms from the host system and other containers.
+
+UTS namespace:
+--------------
+Isolates the container's hostname and domain name from the host system and other containers.
+
+User namespace:
+----------------
+Isolates the container's user and group IDs from the host system and other containers.
+
+[**] When the namespaces are created ?
+---------------------------------------
+Namespaces are created when a container is started and are destroyed when the container is stopped.
+
+Benefits of namespaces
+-----------------------
+Namespaces provide a number of benefits, including:
+
+[**]Security:
+--------------
+Namespaces isolate containers from each other and from the host system, which helps to improve security.
+
+Portability:
+--------------
+Namespaces allow containers to run on any Linux system without modification.
+
+Efficiency:
+--------------
+Namespaces allow containers to share resources with each other and with the host system, which can improve efficiency.
+
+
+Namespaces are a key feature of Docker and are essential for running containers in a secure and efficient manner.
+
+
+
+[**] What is CGroups in docker [**]
+-----------------------------------
+Cgroups, or control groups, are a Linux kernel feature that limits, accounts for, and isolates the resource usage (CPU, memory, disk I/O, etc.) of a collection of processes. Docker uses cgroups to limit the resources that a container can use.
+
+Here are some of the benefits of using cgroups in Docker:
+----------------------------------------------------------
+Resource isolation:
+--------------------
+Cgroups help to isolate containers from each other and from the host system. This helps to prevent containers from interfering with each other or with the host system.
+
+Resource limits:
+-----------------
+Cgroups can be used to limit the amount of resources that a container can use. This helps to prevent containers from using too many resources and impacting the performance of other containers or the host system.
+
+Resource accounting:
+--------------------
+Cgroups can be used to track the amount of resources that a container is using. This information can be used to troubleshoot performance problems or to bill users for their resource usage.
+
+[+++]CGrouops main funda --> 
+---------------------------
+Overall, cgroups are a powerful tool that can be used to manage the resources that containers use. Docker uses cgroups to create isolated environments for each container and to limit the amount of resources that a container can use. This helps to ensure that containers do not interfere with each other or with the host system.
+
+
+[***]what is veth[***]
+-----------------------
+A veth interface is a virtual ethernet cable that connects the container to the "switch": when you create a veth device, you get two interfaces; Docker puts one interface inside the container (that becomes eth0 in the container), and the other end of the device is attached to the bridge.
+
+
+Here are some additional details about veth pairs:
+-----------------------------------------------------
+[*]A veth pair consists of two virtual network interfaces: one end is attached to the container's network namespace, and the other end is attached to the Docker host's network namespace.
+[*]Veth pairs are created when a container is created.
+[*]Veth pairs can be used to connect Docker containers to each other.
+[*]Veth pairs can be used to connect Docker containers to the Docker host.
+[*]Veth pairs are a powerful tool for networking Docker containers. They allow you to create isolated networks for your containers, and they also allow you to connect containers to each other and to the Docker host.
+
+
+[***] What is union mount [***]
+--------------------------------
+
+A union mount in Docker is a way to combine multiple directories into a single view. This can be useful for sharing data between containers, or for creating a custom filesystem for a container.
+Union mounts are created using the -v or --mount flag when running a Docker container. The syntax is:
+Code
+
+docker run -v <source>:<destination> <image>
+
+The <source> directory is the directory that you want to mount into the container, and the <destination> directory is the location in the container where you want to mount it.
+For example, the following command would mount the /data directory on the host machine into the /data directory in the container:
+Code
+
+docker run -v /data:/data my-image
+
+You can also use union mounts to create custom filesystems for containers. For example, the following command would create a filesystem that contains the contents of the /data directory on the host machine, as well as the contents of the /tmp directory in the container:
+Code
+
+docker run -v /data:/data -v /tmp:/tmp my-image
+
+Union mounts are a powerful tool that can be used to share data between containers and to create custom filesystems.
+Here are some of the benefits of using union mounts in Docker:
+Efficiency: Union mounts can save disk space by sharing files between containers.
+Isolation: Union mounts can help to isolate containers from each other.
+Flexibility: Union mounts can be used to create custom filesystems for containers.
+If you are using Docker, I recommend that you learn more about union mounts. They can be a valuable tool for managing your containers.
