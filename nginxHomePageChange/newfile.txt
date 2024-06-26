@@ -1,0 +1,4 @@
+This is the new file add after creation of the container
+to test 
+
+localhost/newfile.txt

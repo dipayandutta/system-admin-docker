@@ -1,0 +1,18 @@
+<h1>This is the changed Home Page </h1>
+<h3>using bind mount</h3>
+<p>-v $(pwd):/usr/share/nginx/html</p>
+
+<hr>
+<h4 align="center">
+  Dockerfile
+</h4>
+<p>
+FROM nginx:latest
+<br>
+WORKDIR /usr/share/nginx/html
+</p>
+<h4 >docker build -t webhost:latest .</h4>
+<hr>
+<h2>Here is the full command</h2>
+<hr>
+<p>docker container run --publish 80:80 --detach --name nginxhome -v $(pwd):/usr/share/nginx/html webhost:latest</p>
