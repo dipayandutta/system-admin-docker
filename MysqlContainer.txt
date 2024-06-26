@@ -1,1 +1,9 @@
 docker container run --publish 3306:3306 --detach --name database --env MYSQL_ALLOW_EMPTY_PASSWORD=True mysql:latest
+
+### Make a Persistent Volume###
+
+docker container run --publish 3306:3306 --detach --name database --env MYSQL_ALLOW_EMPTY_PASSWORD=True -v mysql-database:/var/lib/mysql mysql:latest
+
+docker volume ls
+
+docker volume mysql-database
