@@ -1,0 +1,1 @@
+docker container run --publish 3306:3306 --detach --name database --env MYSQL_ALLOW_EMPTY_PASSWORD=True mysql:latest
