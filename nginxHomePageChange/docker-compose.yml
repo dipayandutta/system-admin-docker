@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  nginxHome:
+    image: nginx
+    volumes:
+      - .:/usr/share/nginx/html
+    ports:
+      - '3400:80'

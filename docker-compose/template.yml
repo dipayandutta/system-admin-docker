@@ -1,0 +1,14 @@
+version: '3.1' #If no version is give version 1 is default
+
+# describe services as docker run command
+services:
+  servicename: #name of the service
+    image:
+    command:
+    environment: ##--env option
+    volumes: #volume mount command
+  servicename2: # name of the service
+
+volumes: # docker volume create
+
+networks: # docker network create
