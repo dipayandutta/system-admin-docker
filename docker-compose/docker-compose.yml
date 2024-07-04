@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  webhost:
+    hostname: nginx-host
+    image: nginx:latest
+    volumes:
+      - .:/usr/share/nginx/html
+    ports:
+      - '3303:80'
+    container_name: changednginx
