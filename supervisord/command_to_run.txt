@@ -1,0 +1,1 @@
+docker container run -dit -p 2223:22 -p 83:80 --name super ubuntu:ssh
