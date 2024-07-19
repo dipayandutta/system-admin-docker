@@ -8,3 +8,18 @@ kubectl get all
 
 kubectl get configmap
 kubectl get secret
+
+kubectl describe service webapp
+
+kubectl get pod
+
+kubectl logs <pod-name>
+
+kubectl get svc
+
+minikube ip
+
+
+kubectl get node -o wide
+
+
