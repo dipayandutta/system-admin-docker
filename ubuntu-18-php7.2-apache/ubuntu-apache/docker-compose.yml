@@ -1,0 +1,45 @@
+services:
+  db:
+    container_name: mysql-database
+    image: mysql:5.7
+    hostname: sbdatabase
+    environment:
+       MYSQL_ROOT_PASSWORD: password
+       MYSQL_ROOT_HOST: "%"
+       MYSQL_USER: sbadmin
+       MYSQL_PASSWORD: sbpassword
+       MYSQL_DATABASE: sco
+         #command: [mysqld, --default-authentication-plugin=mysql_native_password, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      php-mysql-net:
+        ipv4_address: 10.5.0.5 
+
+  php:
+    container_name: php-container
+    depends_on:
+      - db
+    image: php-ubuntu:v1
+    hostname: sbapp
+    ports:
+      - '8000:80'
+    restart: always
+    volumes: ['./:/var/www/html']
+    networks:
+      php-mysql-net:
+        ipv4_address: 10.5.0.6
+
+volumes:
+  db:
+
+networks:
+  php-mysql-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+      
