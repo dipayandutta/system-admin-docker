@@ -1,0 +1,11 @@
+version: '1.0.0'
+services:
+  web:
+    build: .
+    container_name: 'JPM-Pyament-Services'
+    volumes:
+      - ./src:/var/www/html:rw
+      - .:/opt/tmp:rw
+      - .:/logs:rw
+    ports:
+      - 8000:80

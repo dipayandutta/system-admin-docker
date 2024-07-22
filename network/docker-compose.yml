@@ -1,0 +1,29 @@
+services:
+  db:
+    container_name: mysql_db
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=10.5.0.1
+      - MYSQL_USER=sbadmin
+      - MYSQL_PASSWORD=sbpassword
+      - MYSQL_DATABASE=sco
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      custom_net:
+        ipv4_address: 10.5.0.5
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  custom_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
