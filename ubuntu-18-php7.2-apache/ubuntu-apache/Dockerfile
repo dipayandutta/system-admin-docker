@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-LABEL maintainer = "System Admin"
+LABEL maintainer = "Dipaya Dutta"
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Add developer user and developer group
