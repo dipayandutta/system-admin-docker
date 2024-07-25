@@ -1,6 +1,6 @@
 '''
 Author= Dipayan Dutta , RHCE (System administrator)
-Purpose = Check the linux file server details using paramiko
+Purpose = Check the linux server details using paramiko
 '''
 import paramiko
 import paramiko.client
