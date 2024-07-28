@@ -1,0 +1,147 @@
+ 				Configuration of haproxy
+				------------------------
+				------------------------
+				-------------------------
+
+HAPROXY --> 192.168.56.0 -->haproxy-centos8
+NODE01  --> 192.168.56.10-->nginx-node01
+NODE02  --> 192.168.56.11--> nginx-node02
+
+			[*** CONFIGURATION ON THE HAPROXY SERVER ***]
+		      #############------------------------############
+ 
+[+++ STEP -01 install haproxy +++]
+----------------------------------
+#dnf install haproxy -y
+
+
+[***]haproxy location[***]
+---------------------------
+/etc/haproxy
+
+[+++ STEP -02 configuration of haprproxy for two nodes running nginx +++]
+-------------------------------------------------------------------------
+
+edit the config
+---------------------
+#vim /etc/haproxy.cfg
+
+Add this-->
+#---------------------------------------------------------------------
+# main frontend which proxys to the backends
+#---------------------------------------------------------------------
+frontend http_balancer
+        bind 192.168.56.0:80
+        option http-server-close
+        option forwardfor
+        stats uri /haproxy?stats
+        default_backend nginx_webservers
+#---------------------------------------------------------------------
+# static backend for serving up images, stylesheets and such
+#---------------------------------------------------------------------
+backend nginx_webservers
+        mode http
+        balance roundrobin
+        option httpchk HEAD / HTTP/1.1\r\nHost:\ localhost
+        server nginx-node01 192.168.56.11:80 check
+        server nginx-node02 192.168.56.12:80 check
+#----------------------------------------------------
+
+
+[+++STEP -03 Configure the rsyslog+++]
+----------------------------------------
+# vim /etc/rsyslog.conf
+
+uncomment line number 32 and 33
+ 
+-->module(load="imudp") # needs to be done just once
+-->33 input(type="imudp" port="514")
+
+
+[+++ STEP -04 create a happroxy.conf inside the rsyslog.d directory +++]
+-------------------------------------------------------------------------
+
+vim /etc/rsyslog.d/haproxy.conf
+local2.=info    /var/log/haproxy-access.log
+local2.notice   /var/log/haproxy-info.log
+
+
+[+++ STEP -05 restart the rsyslog service +++]
+-----------------------------------------------
+#systemctl restart rsyslog
+#systemctl enable rsyslog
+
+[+++ STEP -06 SELINUX --> Set sebool for haproxy +++]
+---------------------------------------------
+#getsebool haproxy_connect_any
+#setsebool -P haproxy_connect_any 1
+#getsebool haproxy_connect_any
+
+[+++ STEP -07 Enable haproxy +++]
+----------------------------------
+#systemctl enable haproxy --now
+
+[+++ STEP -08 Firewall Port +++]
+---------------------------------
+#firewall-cmd --permanent --add-port=80/tcp
+#firewall-cmd --reload
+#firewall-cmd --list-all
+
+
+[+++ STEP -09 Configure the Client nginx servers +++]
+-------------------------------------------------------
+
+--> Follow client configurations for node01 and node02 server as mentioned below
+
+[+++ STEP-10 CURL to get the result +++]
+curl 192.168.56.0
+
+
+			[*** CONFIGURATION ON THE NODE01 SERVER ***]
+		      #############------------------------############
+
+
+[+++ STEP -01 install nginx webserver +++]
+----------------------------------------------
+# dnf install nginx -y
+
+[+++ STEP -02 Start and enable nginx +++]
+--------------------------------------------
+#systemctl start nginx
+#systemctl enable nginx 
+
+[+++ STEP -03 Create a default HTML Landing Page +++]
+------------------------------------------------------
+#cd /usr/share/nginx/html/
+# echo "Nginx Node01--Welcome to First Nginx Web Server">index.html
+
+[+++ STEP -04 Allow from firewall +++]
+--------------------------------------
+firewall-cmd --permanent --add-service=http
+firewall-cmd --reload
+firewall-cmd --list-all
+
+
+			[*** CONFIGURATION ON THE NODE02 SERVER ***]
+		      #############------------------------############
+
+
+[+++ STEP -01 install nginx webserver +++]
+----------------------------------------------
+# dnf install nginx -y
+
+[+++ STEP -02 Start and enable nginx +++]
+--------------------------------------------
+#systemctl start nginx
+#systemctl enable nginx 
+
+[+++ STEP -03 Create a default HTML Landing Page +++]
+------------------------------------------------------
+#cd /usr/share/nginx/html/
+# echo "Nginx Node02--Welcome to Second Nginx Web Server">index.html
+
+[+++ STEP -04 Allow from firewall +++]
+--------------------------------------
+firewall-cmd --permanent --add-service=http
+firewall-cmd --reload
+firewall-cmd --list-all
