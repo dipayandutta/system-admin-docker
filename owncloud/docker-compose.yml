@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.1
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+    container_name: mysql-database-owncloud
+    networks:
+      owncloud:
+        ipv4_address: 192.168.25.25
+
+  filebrowser:
+    container_name: owncloud
+    image: filebrowser
+    build:
+      context: ubuntu
+    ports:
+      - '80:80'
+      - '2245:22'
+    networks:
+      owncloud:
+        ipv4_address: 192.168.25.20
+
+volumes:
+  db:
+    driver: local
+networks:
+  owncloud:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.25.0/24
+
