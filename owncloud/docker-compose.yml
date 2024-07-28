@@ -29,10 +29,10 @@ services:
     image: filebrowser
     build:
       context: ubuntu
-    volumes:
-     - "$PWD/apps:/var/www/html/owncloud/apps"
-     - "$PWD/data:/var/www/html/owncloud/data"
-     - "$PWD/external:/var/www/html/owncloud/apps-external"
+        #volumes:
+        #- "$PWD/apps:/var/www/html/owncloud/apps"
+        #- "$PWD/data:/var/www/html/owncloud/data"
+        #- "$PWD/external:/var/www/html/owncloud/apps-external"
     ports:
       - '80:80'
       - '2245:22'

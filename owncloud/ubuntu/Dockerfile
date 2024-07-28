@@ -22,7 +22,7 @@ RUN apt-get update && apt-get -y install libxml2-dev && apt-get -y install softw
 apt-get install -y git && add-apt-repository ppa:ondrej/php  && \
 apt-get update && \
 apt-get install -y apache2 && \
-apt-get -y install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-intl
+apt-get -y install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-intl php7.4-phar php7.4-ldap php7.4-xmlreader php7.4-yaml php7.4-pdo-dblib php7.4-exif php7.4-pgsql php7.4-gettext php7.4-xsl
 
 RUN apt-get  -y install libapache2-mod-php7.4
 
