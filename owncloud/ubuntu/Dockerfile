@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install build-essential -y
 ENV LANG C.UTF-8
 
 # Install openssh-server
-RUN apt-get install -y openssh-server sudo supervisor vim procps uuid-runtime curl
+RUN apt-get install -y openssh-server sudo supervisor vim procps uuid-runtime curl unzip inetutils-ping
 
 # Install PHP-7.4
 #RUN apt-get update && apt-get install -y libxml2-dev && apt-get -y install software-properties-common && apt-get -y install git && add-apt-repository ppa:ondrej/php && apt-get update && apt-get install -y apache2 && apt-get install -y php7.4 && apt-get install -y libapache2-mod-php7.4 php7.4-curl php7.4-json php7.4-gd  php7.4-pdo-odbc php7.4-bz2 php7.4-mongodb php7.4-dev php7.4-bcmath php7.4-mysql php7.4-mysqli php7.4-pdo php7.4-json php7.4-json php7.4-oauth  php7.4-phar php7.4-ldap php7.4-xmlreader php7.4-mbstring php7.4-zip php7.4-uploadprogress php7.4-yaml php7.4-pdo-dblib php7.4-exif php7.4-pgsql php7.4-libsodium php7.4-gettext php7.4-xsl  && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -22,12 +22,21 @@ RUN apt-get update && apt-get -y install libxml2-dev && apt-get -y install softw
 apt-get install -y git && add-apt-repository ppa:ondrej/php  && \
 apt-get update && \
 apt-get install -y apache2 && \
-apt-get -y install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-mbstring php7.4-gd php7.4-curl  
+apt-get -y install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-intl
 
 RUN apt-get  -y install libapache2-mod-php7.4
 
 # Install apache web application server 
 RUN apt-get install apache2 -y
+
+# Create a OWNCLOUD Directory
+RUN mkdir -p /var/www/html/owncloud 
+
+# COPY owncloud
+COPY owncloud /var/www/html/owncloud
+
+# Change Permission
+#RUN chown -R www-data:www-data /var/www/html/owncloud
 
 # Copy Supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
