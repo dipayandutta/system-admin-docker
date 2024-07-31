@@ -1,0 +1,32 @@
+Docker layers
+
+
+
+ docker commit layers layers-container:v2
+ docker history --no-trunc layers-container:v2
+ docker save layers-container:v2 -o layers.tar
+ tar tvf layers.tar
+ 
+ 
+ Extract all layers
+ tar xf layers.tar
+ 
+ docker image inspect layers-container:v2
+ 
+ 
+ Access root shell from an image
+ docker run -it --privileged --pid=host layers-container:v2 nsenter -t 1 -m -u -n -i sh
+ [exec: nsenter: not found]
+ 
+ 
+ docker save nginx:latest | tar -tvf - | cat manifest.json
+ 2310  apt install jq
+ 2311  sudo apt install jq
+ 2312  docker save nginx:latest | tar -tvf - | cat manifest.json | jq
+ 2313  docker save nginx:latest | tar -tvf - | cat index.json | jq
+ 2314  apt search synk
+ 2315  docker manifest inspect layers-container:v2
+ 2316  sudo docker manifest inspect layers-container:v2
+
+
+https://snyk.io/blog/container-image-formats/
