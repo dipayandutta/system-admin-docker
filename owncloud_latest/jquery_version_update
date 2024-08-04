@@ -1,0 +1,1 @@
+docker cp  jquery.min.js owncloud_server:/var/www/owncloud/core/vendor/jquery/dist
