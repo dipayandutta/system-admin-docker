@@ -1,0 +1,26 @@
+BOX_IMAGE="almalinux/9"
+NODE_COUNT=4
+
+Vagrant.configure("2") do |config|
+	config.vm.define "master" do |subconfig|
+		subconfig.vm.box = BOX_IMAGE
+		subconfig.vm.hostname = "master"
+		subconfig.vm.network :private_network, ip: "192.168.56.0"
+	end
+	(1..NODE_COUNT).each do |i|
+		config.vm.define "node#{i}" do |subconfig|
+			subconfig.vm.box = BOX_IMAGE
+			subconfig.vm.hostname = "node#{i}"
+			subconfig.vm.network :private_network,ip: "192.168.56.#{i+10}"
+		end
+	end
+	config.vm.provider "virtualbax" do |vb|
+		vb.gui = false
+		vb.memory = 2048
+		vb.cpus =1
+	end
+	# Install updates on all machines
+	config.vm.provision "shell", inline: <<-SHELL
+		yum update -y
+	SHELL
+	end
