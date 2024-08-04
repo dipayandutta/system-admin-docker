@@ -1,0 +1,7 @@
+list all git commits 
+--> git reflog
+
+Reset the git repo
+git reset --hard <commit ID>
+
+commit ID - just before the commit ID from where the error starts
