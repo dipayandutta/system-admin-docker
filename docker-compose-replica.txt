@@ -1,0 +1,17 @@
+
+
+You can do it with replica as mentioned in Compose specification:
+
+version: '3'
+services:
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    networks:
+      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 6
+
+One can use docker-compose --compatibility up to make Docker accept a deploy section without using swarm.
+
