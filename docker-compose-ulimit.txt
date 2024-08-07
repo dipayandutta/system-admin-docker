@@ -1,0 +1,46 @@
+ulimits:
+  nproc: 65535
+  nofile:
+    soft: 26677
+    hard: 46677
+---------------------
+
+Increasing Docker ulimits
+
+Docker ulimits limit a program's resource utilization to prevent a run-away bug or security breach from bringing the whole system down. The default limit for Amazon AWS is 1024, which is not enough for Sisense to run properly.
+The instructions below describe how to check what your current value is, and then increase it to enable Sisense to run.
+
+To increase the ulimit value:
+
+    Connect to the desired host and execute the following command:
+
+    systemctl show docker
+
+    Search for NOFILE.
+
+    If the output is 1024, edit the file:
+
+    /etc/sysconfig/docker
+
+    and replace the line:
+
+    OPTIONS=" — default-ulimit nofile=1024:4096"
+
+    with:
+
+    OPTIONS="--default-ulimit nofile=1024000:1024000"
+
+    Restart the Docker daemon.
+
+    sudo systemctl restart docker
+
+-----------------------------------------------
+
+
+The latest docker supports setting ulimits through the command line and the API. For instance, docker run takes --ulimit <type>=<soft>:<hard> and there can be as many of these as you like. So, for your nofile, an example would be --ulimit nofile=262144:262144
+
+------------------------------------------
+
+Max Number of Open File limits of the docker daemon
+------------
+cat /proc/$(ps -A | grep dockerd | awk '{print $1}')/limits | grep "files"
