@@ -1,0 +1,126 @@
+####
+==> supervisord.conf,Dockerfile, docker-compose.yml files to create multiple
+squid containers along with a nginx reverse proxy to maintain all the squid
+proxy containers, squid will listen on 8080 port.
+####
+================supervisord.conf================================
+[supervisord]
+nodaemon=true
+
+[program:CACHE]
+user=root
+priority=1
+command=/usr/sbin/squid -z
+autostart=true
+autorestart=true
+
+
+[program:SQUID]
+user=root
+priority=2
+command=/usr/sbin/squid
+autostart=true
+autorestart=true
+
+
+[program:crond]
+command=/usr/sbin/crond -n
+redirect_stderr=true
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/supervisor/%(program_name)s.log
+
+
+[program:webmin]
+priority=3
+command=/etc/webmin/start
+stdout_logfile=/var/log/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/supervisor/%(program_name)s.log
+autorestart=true
+startsecs=0
+--------------------------------------------------------------------------------------
+
+Dockerfile
+----------------------------------------------------------------------------------------
+FROM  oraclelinux:7.9
+COPY epel-release-latest-7.noarch.rpm /opt/epel-release-latest-7.noarch.rpm
+COPY Dockerfile  /Dockerfile
+COPY runscript.squid /runscript.squid
+COPY webmin-2.105-1.noarch.rpm /opt
+RUN yum -y update \
+    && yum -y install  squid   httpd httpd-tools cronie \
+    && yum -y localinstall /opt/epel-release-latest-7.noarch.rpm \
+    && yum -y localinstall /opt/webmin-2.105-1.noarch.rpm \
+    && yum -y install supervisor \
+    && htpasswd -c -b /etc/squid/passwords proxyuser password\
+    &&  mkdir -p /var/spool/squid  \
+    && chmod -R 777 /var/spool/squid
+
+WORKDIR /etc/squid/
+COPY squid.conf /etc/squid/squid.conf
+COPY supervisord.conf /etc/supervisord.conf
+EXPOSE 10000
+ENTRYPOINT ["/usr/bin/supervisord"]
+
+---------------------------------------------------------
+image - dockerlife2024/oraclelinux:ol7.squid.070824
+
+
+========================================================================================
+docker-compose.yml
+=======================================================================================
+services:
+  squid_worker:
+    image: dockerlife2023/oraclelinux:ol9.squid.060824
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
+    deploy:
+      mode: replicated
+      replicas: 10
+  nginx_worker:
+     image: dockerlife2023/oraclelinux:ol9.nginx.060824
+     ports:
+       - 8080:8001
+       - 10000:10000
+networks:
+  default:
+    external:
+      name: squid-network
+
+
+
+===================================================================================
+nginx.conf
+===================================================================================
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+stream {
+upstream target_server {
+         server  192.168.10.15:3128;
+         server  192.168.10.16:3128;
+}
+
+
+include /etc/nginx/conf.d/*.conf;
+
+    server {
+         listen 8001;
+         proxy_pass target_server;}
+
+}
+
+
