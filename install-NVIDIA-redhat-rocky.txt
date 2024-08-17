@@ -1,2 +1,77 @@
 INSTALLATION PROCESS OF NVIDIA DRIVER GT-710 IN ROCKY LINUX 9.4
 ==================================================================
+
++++STEP-01++
+------------
+		INSTALL DEVELOPMENT LIBRARIES
+#dnf groupinstall "Development Tools"
+#dnf install kernel-devel kernel-headers gcc make dkms acpid libglvnd-glx libglvnd-opengl libglvnd-devel pkgconfig libxcb
+#dnf install ncurses-devel bison flex elfutils-libelf-devel openssl-devel git-email -y
+
++++STEP-02++
+=-------------
+		DISABLE nouveau
+cat /etc/default/grub
+
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=1G-4G:192M,4G-64G:256M,64G-:512M resume=/dev/mapper/rl_localhost--live-swap rd.lvm.lv=rl_localhost-live/root rd.lvm.lv=rl_localhost-live/swap rhgb quiet modprobe.blacklist=nouveau"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_ENABLE_BLSCFG=true
+
+
+---> modprobe.blacklist=nouveau <-----
+---------------------------------------
+This above mentioned part is added
+
++++STEP-03+++
+----------------
+	create denylist
+
+touch /etc/modprobes.d/denylist.conf
+
+content of the newly created file should be 
+
+cat /etc/modprobe.d/denylist.conf 
+blacklist nouveau
+options nouveau modeset=0
+
+
+++STEP-04+++
+--------------
+REGENARATE THE grub configuration file AND ADD A BOOT MENU ENTRY for EFI Firmware configuration
+
+#dracut --force
+#grub2-mkconfig -o /boot/efi/EFI/rocky/grub.cfg
+
+
++++STEP-05+++
+---------------
+Change the user runlevel to multi-user.target from graphical.target
+
+# systemctl set-default multi-user.target
+
+
++++STEP-06+++
+-------------
+REBOOT the system
+
+# systemctl reboot
+
+
++++STEP-07++++
+---------------
+
+After getting access in shell run the NVIDIA installer and follow the installation process
+
+
++++STEP-08+++
+-----------------
+
+After the successful installation process of the NVIDIA driver change the run level to graphical-target
+
+
+# systemctl set-default graphical.target
