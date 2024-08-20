@@ -1,0 +1,20 @@
+services:
+  squid_worker:
+    image: dockerlife2023/oraclelinux:ol9.squid.060824
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
+    deploy:
+      mode: replicated
+      replicas: 10
+  nginx_worker:
+     image: dockerlife2023/oraclelinux:ol9.nginx.060824
+     ports:
+       - 8080:8001
+       - 10000:10000
+networks:
+  default:
+    external:
+      name: squid-network
