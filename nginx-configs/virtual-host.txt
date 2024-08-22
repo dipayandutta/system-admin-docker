@@ -1,0 +1,19 @@
+/*Nginx Virtual Hosting*/
+
+nginx config for vHost
+
+
+
+cat /etc/nginx/conf.d/default.conf 
+server {
+	listen 80 default_server;
+	server_name _;
+	#root /usr/share/nginx/html;
+	root /root/nginx;
+}
+[root@41b83d7b1aad conf.d]# cat example.com.conf 
+server {
+	listen 80;
+	server_name example.com www.example.com;
+	root /var/www/example.com/html;
+}
