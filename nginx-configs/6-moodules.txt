@@ -1,0 +1,11 @@
+location of Nginx Modules 
+-----------------------------
+/etc/nginx/modules
+or 
+/usr/lib64/nginx/modules
+
+To List all the compiled modules Nginx Have
+-----------------------------------
+nginx -V 2>&1 | tr -- - '\n' | grep _module
+
+
