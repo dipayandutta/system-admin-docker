@@ -1,0 +1,150 @@
+ 33  yum install libmaxmindb
+   34  wget
+   35  dnf install wget
+   36  wget https://rhel.pkgs.org/9/remi-x86_64/GeoIP-devel-1.6.12-9.el9.remi.x86_64.rpm.html
+   37  dnf install http://repo.okay.com.mx/centos/9/x86_64/release/okay-release-1-1.noarch.rpm
+   38  dnf install GeoIP-devel
+   39  dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
+   40  dnf update
+   41  yum install -y geoip-devel libcurl-devel libxml2-devel libxslt-devel libgd-devel lmdb-devel openssl-devel pcre-devel perl-ExtUtils-Embed yajl-devel zlib-devel
+   42  dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+   43  dnf update
+   44  yum install -y geoip-devel libcurl-devel libxml2-devel libxslt-devel libgd-devel lmdb-devel openssl-devel pcre-devel perl-ExtUtils-Embed yajl-devel zlib-devel
+   45  dnf config-manager --set-enabled remi
+   46  yum install -y geoip-devel libcurl-devel libxml2-devel libxslt-devel libgd-devel lmdb-devel openssl-devel pcre-devel perl-ExtUtils-Embed yajl-devel zlib-devel
+   47  dnf install -y geoip-devel libcurl-devel libxml2-devel libxslt-devel libgd-devel lmdb-devel openssl-devel pcre-devel perl-ExtUtils-Embed yajl-devel zlib-devel
+   48  dnf install openssl-devel
+   49  yum install libcurl-devel
+   50  yum install linxml2-devel
+   51  yum install libxml2-devel
+   52  yum install libxslt-devel
+   53  yum install perl-ExtUtils-Embed
+   54  yum install pcre-devel
+   55  yum install yajl-devel
+   56  wget http://mirror.stream.centos.org/9-stream/CRB/source/tree/Packages/yajl-2.1.0-20.el9.src.rpm
+   57  dnf install geoip-devel
+   58  yum install zlib-devel
+   59  yum install libgd-devel
+   60  yum install lmdb-dele
+   61  yum install lmdb-devel
+   62  dnf install epel-release
+   63  dnf install lmdb-devel
+   64  history 
+   65  dnf config-manager --set-enabled epel
+   66  dnf install lmdb-devel
+   67  dnf install lmdb-epel-libs
+   68  cd /opt/
+   69  ls -lt
+   70  git clone --depth 1 -b v3/master https://github.com/SpiderLabs/ModSecurity.git
+   71  ls -ltr
+   72  cd ModSecurity/
+   73  ls -ltr
+   74  git submodule init
+   75  git submodule update
+   76  ./build.sh
+   77  echo $?
+   78  ./configure
+   79  make
+   80  make install
+   81  cd ..
+   82  ls -ltr
+   83  git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+   84  ls -ltr
+   85  nginx -v
+   86  wget http://nginx.org/download/nginx-1.20.1.tar.gz
+   87  ls -ltr
+   88  tar -zxvf nginx-1.20.1.tar.gz 
+   89  ls -ltr
+   90  cd nginx-1.20.1
+   91  ls -ltr
+   92  ./configure --with-compact --add-dynamic-module=../ModSecurity-nginx/
+   93  ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx/
+   94  make modules
+   95  ls -ltr
+   96  cd objs/
+   97  ls -ltr
+   98  cp ngx_http_modsecurity_module.so /usr/lib64/nginx/modules/
+   99  cd /etc/nginx
+  100  vim nginx.conf
+  101  yum install vim
+  102  vim nginx.conf
+  103  nginx -t
+  104  mkdir modsecurity
+  105  cp /opt/ModSecurity/modsecurity.conf-recommended /etc/nginx/modsecurity/
+  106  cd modsecurity/
+  107  l s-ltr
+  108  ls -ltr
+  109  mv modsecurity.conf-recommended modsecurity.conf
+  110  ls -ltr
+  111  cd ..
+  112  ls -ltr
+  113  cd modsecurity/
+  114  vim modsecurity.conf 
+  115  cd ..
+  116  cd conf.d/
+  117  vim default.conf
+  118  vim default.conf
+  119  nginx
+  120  vim default.conf
+  121  nginx
+  122  cd ..
+  123  ls -ltr
+  124  mkdir ssl
+  125  ls -ltr
+  126  openssl req -x509 -nodes -days 365
+  127  cd ssl/
+  128  ls -ltr
+  129  cd ,,
+  130  cd ,,
+  131  cd ..
+  132  ls -ltr
+  133  mv privkey.pem ssl/
+  134  ls -ltr
+  135  cd ssl/
+  136  ls -ltr
+  137  rm privkey.pem 
+  138  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key -out /etc/nginx/ssl/public.pem
+  139  ls -ltr
+  140  cd ..
+  141  nginx
+  142  ip a s
+  143  pkill -9 nginx
+  144  nginx -t
+  145  ps -aef
+  146  nginx
+  147  kill -9 nginx
+  148  nginx
+  149  cd conf.d/
+  150  vim default.conf 
+  151  vim default.conf 
+  152  nginx -t
+  153  cd /opt/ModSecurity
+  154  ls -ltr
+  155  ls -ltr | grep unicode.mapping 
+  156  cd -
+  157  cp /opt/ModSecurity/unicode.mapping /etc/nginx/modsecurity/
+  158  nginx -t
+  159  nginx
+  160  dnf install pkill
+  161  dnf install procps
+  162  pkill -9 nginx
+  163  nginx
+  164  history 
+  165  vim /etc/nginx/nginx.conf
+  166  pkill -9 nginx
+  167  nginx -t
+  168  nginx 
+  169  vim /etc/nginx/nginx.conf
+  170  ngnix -t
+  171  nginx -t
+  172  nginx -t
+  173  vim /etc/nginx/nginx.conf
+  174  dnf install ngix-extras
+  175      dnf install nginx-all-modules
+  176      dnf install nginx-all-modules
+  177  vim /etc/nginx/nginx.conf
+  178  nginx -t
+  179  vim /etc/nginx/nginx.conf
+  180  nginx -t
+  181  vim /etc/nginx/nginx.conf
+

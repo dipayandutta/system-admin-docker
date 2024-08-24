@@ -1,3 +1,8 @@
+/******************Command to Create Self Signed Certificate*************************************/
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key -out /etc/nginx/ssl/public.pem
+
+
+
 /*************** Rewrite Force all Trafiic comming on HTTP to move on HTTPS********************/
 
 server {
