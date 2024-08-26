@@ -1,0 +1,1 @@
+docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add SYS_ADMIN   --tmpfs /tmp:exec --tmpfs /run/:exec --network webhostnetwork --ip 192.168.50.50 -p22:22 -p 80:80 --name systemd dockercommit/dipayandutta:zabbix

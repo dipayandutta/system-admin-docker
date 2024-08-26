@@ -17,6 +17,9 @@ RUN yum -y install dnf \
         epel-release \
         openssh-server \
         wget \
+        vim \
+        telnet \
+        nmap \
         iproute \
         mc \
         nano \
@@ -27,8 +30,31 @@ RUN yum -y install dnf \
         passwd \
         httpd \
         httpd-tools \
+        glibc-langpack-en \
     && dnf clean all \
     && yum clean all
+
+# Install PHP 8.0
+RUN dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm \
+    && dnf install -y dnf-utils \
+    && dnf module enable php:remi-8.0 -y \
+    && dnf install -y php php-cli php-common php-gd php-mbstring php-xml php-mysqli
+
+# insert phpinfo in /var/www/html
+RUN echo -e "<?php phpinfo(); ?>" > /var/www/html/index.php
+
+# MariaDB Installation
+COPY mariadb.repo /etc/yum.repos.d/
+RUN dnf -y update 
+RUN dnf install -y MariaDB-server MariaDB-client
+
+
+# Install Zabbix
+#COPY epel.repo /etc/yum.repos.d/
+#RUN dnf -y update 
+#RUN rpm -Uvh https://repo.zabbix.com/zabbix/7.0/alma/9/x86_64/zabbix-release-7.0-5.el9.noarch.rpm 
+#RUN dnf clean all 
+#RUN dnf install -y zabbix-server-mysql zabbix-web-mysql zabbix-apache-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent 
 
 # Modified version of: https://hub.docker.com/r/centos/systemd/dockerfile
 RUN rm -f \
@@ -71,6 +97,8 @@ RUN rm -f /etc/init.d/net* /run/nologin /var/run/nologin \
     && echo -e "*** Welcome to interactive tty of full AlmaLinux 9 operating system running on docker! ***\n\nLogin: root\nPass: dipayan\n" > /etc/issue \
     && echo -e "\nHint: You can terminate the container by shutting the system down - run the 'halt' command\n" > /etc/motd
 
+
+#Healthcheck 
 HEALTHCHECK --interval=3s --timeout=2m --start-period=4s --retries=15 CMD ["/usr/bin/systemctl", "is-system-running", "--quiet"]
 
 # This is the proper shutdown signal used by systemd init process
@@ -83,3 +111,4 @@ EXPOSE 22 80
 USER root
 
 CMD ["/sbin/init"]
+

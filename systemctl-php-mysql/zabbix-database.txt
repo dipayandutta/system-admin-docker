@@ -1,0 +1,67 @@
+start httpd and mysqld service
+------------------------------------
+systemctl start httpd
+systemctl start mysqld
+
+Secure MariaDB Databse
+--------------------------------
+#mysql 
+
+MariaDB [(none)]> ALTER USER 'root'@'localhost' IDENTIFIED BY 'nodeMachine';
+
+MariaDB [(none)]> DELETE FROM mysql.user WHERE User='';
+
+MariaDB [(none)]> DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost','127.0.0.1','::1');
+
+
+MariaDB [(none)]> DROP DATABASE IF EXISTS test;
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+
+MariaDB [(none)]> EXIT;
+
+mysql -u root -p
+
+
+Initial Database for zabbix
+--------------------------------
+mysql -uroot -p
+password
+mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
+mysql> create user zabbix@localhost identified by 'password';
+mysql> grant all privileges on zabbix.* to zabbix@localhost;
+mysql> set global log_bin_trust_function_creators = 1;
+mysql> quit; 
+
+zabbix Database Import 
+==============================
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix 
+
+
+Disable log_bin_trust_function_creators option after importing database schema. 
+====================================================================================
+mysql -uroot -p
+password
+mysql> set global log_bin_trust_function_creators = 0;
+mysql> quit; 
+
+zabbix Database Server Configuration
+----------------------------------------
+vim /etc/zabbix/zabbix_server.conf
+
+DBPassword=password 
+
+
+Start all the services
+----------------------------------
+systemctl restart zabbix-server zabbix-agent httpd php-fpm
+systemctl enable zabbix-server zabbix-agent httpd php-fpm
+
+Language package
+===================
+dnf install glibc-langpack-en
+Enter password: 
+
+
+
+

@@ -1,0 +1,20 @@
+/*************Nginx Reverse Proxy Example*************/
+server {
+	listen 80;
+	server_name photos.example.com;
+	client_max_body_size 5m; #max file upload size
+	location / {
+		proxy_pass http://127.0.0.1:3000;#speak over the Network Stack
+		proxy_http_version 1.1;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;#get client IP Address
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+	}
+
+	# case sensetive regular expression
+	location ~* \.(js|css|png|jpe?g|gif){
+		root /var/www/photos/examle.com;
+	}
+}
+
