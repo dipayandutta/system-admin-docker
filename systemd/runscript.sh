@@ -1,0 +1,1 @@
+docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add SYS_ADMIN   --tmpfs /tmp:exec --tmpfs /run/:exec -p22:22 -p 80:80 --name systemd dockercommit/dipayandutta:systemd
