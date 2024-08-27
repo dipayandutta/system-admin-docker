@@ -1,0 +1,14 @@
+ansible-server ssh 
+---------------------
+ssh root@192.168.60.100
+password = dipayan
+
+ansible-client-1 rocky
+-----------------------
+ssh root@192.168.60.10
+password = dipayan
+
+ansible-client-2 ubuntu
+----------------------------
+ssh root@192.168.60.11
+password = dipayan

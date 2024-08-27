@@ -1,0 +1,6 @@
+from the ansible server
+---------------------------
+
+# ssh-keygen
+# ssh-copy-id root@client1
+# ssh-copy-id root@client2

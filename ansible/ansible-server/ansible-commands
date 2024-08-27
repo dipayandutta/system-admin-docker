@@ -1,0 +1,44 @@
+/**Ansible ping all the hosts**/
+------------------------------------
+ansible -m ping all 
+
+/**Create a user in client1**/
+----------------------------
+ansible -m user -a 'name=java uid=4000 state=present' client1
+
+/**Delete the created user**/
+--------------------------
+ansible client1 -m command -a "userdel java"
+
+
+/**Run Command on remote server**/
+------------------------------
+ansible user-server -m command -a /usr/bin/hostname
+
+
+/**Run cat command on all servers**/
+----------------------------------
+ansible all -m command -a 'cat /etc/passwd'
+
+/**Check Free Memory in remote servers**/
+------------------------------------
+ansible usa-server -m shell -a "free -mh"
+
+ansible canada-server -m shell -a "free -mh"
+
+
+/**simple playbook example**/
+----------------------------
+file-name.yml
+------------------
+- name: play to setup web server
+  hosts: client1
+  tasks:
+    - name: install httpd webserver
+      yum:
+        name: httpd
+        state: latest
+
+To run playbook
+====================
+ansible-playbook file-name.yml
