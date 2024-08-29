@@ -1,0 +1,18 @@
+How to install Latest Ansible in RHEL8
+-------------------------------------------
+
+/*Check the registration status of the OS*/
+#subscription-manager register
+
+/*Installation Steps*/
+
+----Enable Repo----------
+# subscription-manager repos --enable ansible-2.9.-for-rhel-8-x86_64-rpms
+
+# dnf install ansible
+# dnf infor ansible 
+
+
+/** For Specific version of Ansible**/
+---------------------------------------
+# dnf install ansible-2.9.15

@@ -1,1 +1,1 @@
-docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add=ALL --network ansiblenetwork --ip 192.168.60.11 --name ansible-client2 dockercommit/dipayandutta:ubuntu-systemd-ansibleclient-2
+docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add=ALL --network ansiblenetwork --ip 192.168.60.11 -p 81:80 --name ansible-client2 dockercommit/dipayandutta:ubuntu-systemd-ansibleclient-2

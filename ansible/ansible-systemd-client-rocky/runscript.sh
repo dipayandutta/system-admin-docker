@@ -1,1 +1,1 @@
-docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add SYS_ADMIN   --tmpfs /tmp:exec --tmpfs /run/:exec --network ansiblenetwork --ip 192.168.60.10  --name ansible-client1 dockercommit/dipayandutta:rocky-systemd-ansibleclient-1
+docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add SYS_ADMIN -p 80:80  --tmpfs /tmp:exec --tmpfs /run/:exec --network ansiblenetwork --ip 192.168.60.10  --name ansible-client1 dockercommit/dipayandutta:rocky-systemd-ansibleclient-1

@@ -6,6 +6,12 @@ ENV container=docker
 # are installed for providing backwards compatibility
 # with some services and they are also needed for functioning
 # of the `sshd-keygen` service.
+
+# COPY files
+COPY Dockerfile /opt/
+COPY runscript.sh /opt/
+COPY zabbix-database.txt /opt/
+
 RUN yum -y install dnf \
     && dnf -y upgrade \
     && dnf -y groupinstall "Development Tools" \

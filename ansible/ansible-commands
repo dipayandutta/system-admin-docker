@@ -2,6 +2,11 @@
 ------------------------------------
 ansible -m ping all 
 
+
+/**Get the details system information**/
+------------------------------------------
+ansible -m setup all
+
 /**Create a user in client1**/
 ----------------------------
 ansible -m user -a 'name=java uid=4000 state=present' client1
@@ -42,3 +47,55 @@ file-name.yml
 To run playbook
 ====================
 ansible-playbook file-name.yml
+
+
+/**Ansible Built in service Models**/
+-------------------------------------------
+https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+
+
+/**Ansible Playbook example to install and start httpd service**/
+-------------------------------------------------------------------------
+- name: Install httpd Web Server on Client1 Rocky Linux 9.4
+  hosts: client1
+  tasks:
+    - name: install httpd Web Server
+      dnf:
+        name: httpd
+        state: latest
+    - name: start httpd service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+
+/**Ansible Playbook Example to print Expressions based on Conditions**/
+----------------------------------------------------------------------------
+- name: expression playbook
+  hosts:  all
+  vars: 
+    myvar: "example text"
+    mybool: true
+    mycities:
+      - Kolkata
+      - Howrah
+
+  tasks:
+    - name: print var
+      ansible.builtin.debug:
+        msg:  "Values {{ myvar }}"
+      notify: reload
+
+    - name: condition
+      ansible.builtin.debug:
+        msg:  "Example Condition"
+      when: mybool
+
+    - name: print cities
+      ansible.builtin.debug:
+        var:  item
+      loop: "{{ mycities }}"
+
+  handlers:
+    - name: reload
+      ansible.builtin.debug:
+        msg:  "Example Handler"

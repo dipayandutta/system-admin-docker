@@ -1,0 +1,19 @@
+/*update repository metadata*/
+===============================
+# apt-get update
+
+Install ansible (From universe repository)
+==================
+# apt-get install ansible 
+
+# apt-cache show ansible
+(To check from which repo it is installed)
+
+
+Install Ansible (From ppa-repository)
+---------------------------------------
+# apt install software-properties-common
+
+# add-apt-repository --yes --update ppa:ansible/ansible
+
+# apt install ansible-base
