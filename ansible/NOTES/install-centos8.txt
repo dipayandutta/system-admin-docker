@@ -1,0 +1,12 @@
+enable epel-repor
+---------------------
+# yum install epel-release
+
+Now install Ansible
+---------------------
+# yum install ansible 
+
+List Available packages for a package
+-------------------------------------------
+
+# yum --showduplicates list ansible
