@@ -1,0 +1,7 @@
+First Install epel next rlease package 
+-------------------------------------------
+# yum install epel-next-release
+
+# Install Ansible
+--------------------
+# yum install ansible 

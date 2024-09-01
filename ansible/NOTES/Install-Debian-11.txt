@@ -1,0 +1,19 @@
+First update the metadata  of the repository
+----------------------------------------------
+apt-get update 
+
+Search for Available Package
+--------------------------------
+apt-cache search ansible
+
+apt-cache show ansible
+
+install ansible
+-----------------------
+apt-get install ansible
+
+
+Check for the installed package 
+=================================
+
+dpkg -l | grep ansible

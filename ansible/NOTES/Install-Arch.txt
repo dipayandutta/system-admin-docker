@@ -1,0 +1,15 @@
+update repository
+-------------------
+pacman -Syu
+
+Check the existance of package
+--------------------------------
+pacman -Si ansible 
+
+Install ansible 
+---------------------------
+pacman -S ansible
+
+Checj for the installed Ansible Package 
+-------------------------------------------
+pacman -Q | grep ansible

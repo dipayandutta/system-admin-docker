@@ -1,0 +1,5 @@
+Ansible Core package is included in RHEL-9.1 appstream repository, No additional repository is needed.
+
+dnf list ansible-core 
+
+dnf install ansible-core 

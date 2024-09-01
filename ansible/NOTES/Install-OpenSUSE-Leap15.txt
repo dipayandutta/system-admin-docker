@@ -1,0 +1,7 @@
+update all packages 
+----------------------------
+# zypper refresh 
+
+# zypper info ansible 
+
+# zypper install ansible 

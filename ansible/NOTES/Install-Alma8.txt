@@ -1,0 +1,7 @@
+dnf install epel-release
+
+dnf search ansible 
+
+dnf info ansible 
+
+dnf install ansible 

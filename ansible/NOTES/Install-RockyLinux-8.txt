@@ -1,0 +1,8 @@
+First Install epel-release
+-------------------------------
+# dnf install epel-release 
+
+
+Now Install Ansible
+------------------------
+# dnf install ansible

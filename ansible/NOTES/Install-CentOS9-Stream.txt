@@ -1,0 +1,14 @@
+Search for Available Ansible Package
+-----------------------------------------
+
+dnf search ansible 
+
+
+# get the information about the Ansible Package 
+=--=================================================
+
+dnf info ansible-core
+
+# install ansible-core 
+--------------------------
+dnf install ansible-core 

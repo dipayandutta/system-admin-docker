@@ -1,0 +1,9 @@
+ # upgrade pip 
+ ---------------
+ python3 -m pip install -upgrade pip --user 
+
+
+ # Install Ansible using pip
+ ----------------------------------
+
+python3 -m pip install --user ansible 

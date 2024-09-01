@@ -1,0 +1,20 @@
+Check SUSE Enterprise License Status
+----------------------------------------
+
+SUSEConnect --status 
+
+zypper refresh 
+
+
+zypper search ansible 
+
+SUSEConnect --list-extension 
+
+Activate PackageHub
+---------------------------
+SUSEConnect -p PackageHub/15.3/x86_64
+
+zypper search ansible 
+
+
+zypper install ansible 
