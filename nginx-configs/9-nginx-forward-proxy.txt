@@ -1,0 +1,82 @@
+
+				++++++++++++++++++ NGINX AS FORWARD PROXY ++++++++++++++++++++
+								----------------------------
+
+update the container image
+===============================
+# yum update
+
+Install other necessary packages
+=============================
+# yum install vim wget patch
+
+# yum install gcc gcc-c++ automake pcre pcre-devel zlib-devel openssl openssl-devel git libxml2-devel libxslt-devel perl-devel perl-ExtUtils-Embed git -y
+
+
+Download nginx-package
+=========================
+# wget https://nginx.org/download/nginx-1.20.2.tar.gz
+
+untar
+====================
+
+# tar -zxvf nginx-1.20.2.tar.gz
+
+
+git clone the forward-proxy connect module
+=============================================
+# git clone https://github.com/chobits/ngx_http_proxy_connect_module
+
+patch the module 
+======================
+
+# cd nginx-1.20.2
+# patch -p1 < /ngx_http_proxy_connect_module/patch/proxy_connect_rewrite_1018.patch
+
+
+install the nginx and proxy_connect_module
+================================================
+./configure --add-module=../ngx_http_proxy_connect_module --prefix=/usr
+make
+make install
+
+
+change the Default configuration file with this file
+----------------------------------------------------------
+cat /usr/conf/nginx.conf
+
+#user  nobody;
+worker_processes  1;
+
+error_log  logs/error.log;
+error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+http {
+ server {
+     listen                         3128;
+
+     # dns resolver used by forward proxying
+     resolver                       8.8.8.8;
+
+     # forward proxy for CONNECT request
+     proxy_connect;
+     proxy_connect_allow            443 563;
+     proxy_connect_connect_timeout  10s;
+     proxy_connect_data_timeout     10s;
+
+     # forward proxy for non-CONNECT request
+     location / {
+         proxy_pass http://$host;
+         proxy_set_header Host $host;
+     }
+ }
+}
+
