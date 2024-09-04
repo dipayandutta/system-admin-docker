@@ -1,0 +1,67 @@
+[*]Check The status of the Swarm Service 
+----------------------------------------
+-->docker info | grep swarm
+
+
+[*]initialize the docker swarm service
+--------------------------------------
+--> docker swarm init --> on master node
+(This command will give you a token to join the master node)
+docker node ls (runs only on master node)
+
+[*]on the slave node
+------------------------------
+-->docker swarm join --token <token> <IP>:<2377>
+
+[*]To get the create token previously on the master node
+-------------------------------------------------------
+
+-->docker swarm join-token worker [worker means slave node]
+
+-->docker swarm join-token manager [manager means the master node]
+
+
+[*] To leave a worker/slave node from docker swarm cluster
+------------------------------------------------------------
+---> docker swarm leave (Run this command on the which one to leave)
+
+[*] To Delete leave worker node run this command from the manager/master node
+--------------------------------------------------------------------------------
+--> docker swarm rm <workernode-name>
+
+
+[*] To forcefully remove a worker node run this command from the master node
+------------------------------------------------------------------------------
+--> docker swarm rm -f <workernode-name>
+
+[*] Promoto worker node to master node
+----------------------------------------
+--> docker node promote <wokernode-name><workernode-name>
+
+[*] Demote master node to worker node
+----------------------------------------
+
+--> docker node demote <masternode-name> <masternode-name>
+
+
+[*] To create service in the docker swarm cluster
+--------------------------------------------------------
+run this command on the master node 
+
+--> docker service create -d <name of the image> ping 8.8.8.8
+
+[*] To list all created docker service 
+========================================
+---> docker service ls 
+
+[*] To Delete a service
+-----------------------------------
+---> docker service rm <ServiceName>
+
+
+[*] To Create a nginx service
+-------------------------------------
+--> docker service create --name nginx-server -d -p 80:80 --relicas 1 nginx
+
+
+[*] T
