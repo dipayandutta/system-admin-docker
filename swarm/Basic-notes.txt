@@ -64,4 +64,27 @@ run this command on the master node
 --> docker service create --name nginx-server -d -p 80:80 --relicas 1 nginx
 
 
-[*] T
+[*] To scale the docker service use the command from the master node
+-------------------------------------------------------------------------
+
+--> docker service scale <ID-of-service>=n [n= number of  replicas]
+
+
+[*] Swarm Service to run each container in each node
+----------------------------------------------------------
+
+--> docker service create --mode=global alpine ping 8.8.8.8
+
+[*] Force a docker image run on the manager node
+-------------------------------------------------------
+--> docker service create --replicas=3 -d --constraint="node.role==manager" alpine ping 8.8.8.8
+
+[*] Attach label to a node
+---------------------------------------------------
+--> docker node update --label-add="ssd=true" Slave-1
+
+[*] Constraint for a particular label
+------------------------------------------
+--> docker service create --constraint="node.labels.ssd==true" --replicas=3 -d alpine ping 8.8.8.8
+
+
