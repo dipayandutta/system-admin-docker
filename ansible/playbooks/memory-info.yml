@@ -1,0 +1,12 @@
+--- 
+- name: Check Memory Usage
+  hosts:  all
+  tasks:
+    - name: Memory Utilisation
+      shell:
+          "free -mh"
+      register: os_info
+
+
+    - debug:
+          msg:  "{{ os_info.stdout_lines }}"
