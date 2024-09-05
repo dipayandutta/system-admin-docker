@@ -1,0 +1,17 @@
+---
+- name: shell module Demo
+  hosts:  all
+  tasks:  
+    - name: list files and directories
+      ansible.builtin.shell: "ls -ltr /"
+      register: command_output
+    - name: print the directories
+      ansible.builtin.debug:
+        var:  command_output.stdout_lines
+
+
+# Differnce between shell module and command module
+#-------------------------------------------------------
+# command module run the commands without invoking a shell
+# shell module runs the commands in a shell (bash,zsh..)
+# it is better to use command module
