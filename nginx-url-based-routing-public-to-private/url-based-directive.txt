@@ -1,0 +1,16 @@
+location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    location /server1/ {
+        proxy_pass http://192.168.199.214/;
+        proxy_redirect http://192.168.199.214/ /server1/;
+        proxy_set_header Host $host;
+    }
+
+    location /server2/ {
+        proxy_pass http://192.168.199.215/;
+        proxy_redirect http://192.168.199.215/ /server2/;
+        proxy_set_header Host $host;
+    }
