@@ -1,0 +1,17 @@
+
+docker run -dit \
+--network Desktop-Network-10-x \
+--ip 192.168.10.15 \
+--name Squid-Proxy-IP-10-15 \
+--hostname Squid-Proxy-IP-10-15 \
+-p 8080:3128 \
+-p 10000:10000 \
+-v $PWD:/mydata \
+-v /etc/localtime:/etc/localtime:ro \
+-v /etc/timezone:/etc/timezone:ro \
+-v /dev/shm:/dev/shm \
+-e "TZ=Asia/Kolkata" \
+--restart always  \
+dockerlife2024/oraclelinux:ol7.squid.070824
+
+
