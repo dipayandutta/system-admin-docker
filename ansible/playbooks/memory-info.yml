@@ -8,5 +8,9 @@
       register: os_info
 
 
-    - debug:
+    - ansible.builtin.debug:
           msg:  "{{ os_info.stdout_lines }}"
+          verbosity:  2
+
+
+# ansible-playbook memory-status.yml -vv

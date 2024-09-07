@@ -1,0 +1,11 @@
+---
+- name: debug module demo
+  hosts:  all
+  vars:
+    fruit:  "apple"
+  tasks:
+    - name: debug message
+      ansible.builtin.debug:
+        #var:  fruit
+        #msg:  "Example text"
+        msg:  "Variable Value {{ fruit }}"

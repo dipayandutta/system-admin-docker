@@ -1,0 +1,8 @@
+---
+- name: ping all servers
+  hosts:  all
+  become: false
+
+  tasks:
+    - name: check connection
+      ping:
