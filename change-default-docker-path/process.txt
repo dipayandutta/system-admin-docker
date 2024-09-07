@@ -1,0 +1,41 @@
+process in RHEL-9
+===================
+[*] Check the default Docker root directory
+------------------------------------------------
+docker info | grep -i "Docker Data Root"
+
+[*] stop docker service and docker socket
+-----------------------------------------------
+systemctl stop docker.socket
+systemctl stop docker.service
+
+[*] create the directory to mount the new docker root path
+-----------------------------------------------------------
+
+mkdir -p /var/lib/dockerdata
+
+[*] create a file and content of the file should be same as it is
+----------------------------------------------------------------------
+
+vim /etc/docker/daemon.json
+{
+  "data-root":"/var/lib/dockerdata"
+}
+
+[*] sync and copy
+------------------
+rsync -aP /var/lib/docker /var/lib/dockerdata
+cp -rp /var/lib/docker/*  /var/lib/dockerdata
+
+[*] list the contents of the new directory
+---------------------------------------------
+ls -ltr /var/lib/dockerdata
+
+[*] Start the docker service and docker socket
+--------------------------------------------------
+systemctl start docker.socket
+systemctl stop docker.service 
+
+[*] Now check the root directory of the docker
+--------------------------------------------------
+docker info | grep -i "Docker Data Root"
