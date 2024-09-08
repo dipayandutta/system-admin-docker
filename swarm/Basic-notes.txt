@@ -2,6 +2,21 @@
 ----------------------------------------
 -->docker info | grep swarm
 
+[*] ports for docker swarm
+--------------------------------
+
+==> TCP port 2377 for cluster management communications
+==> TCP and UDP port 7946 for communication among nodes
+==> UDP port 4789 for overlay network traffic
+
+
+[*] firewall rules
+--------------------------
+sudo firewall-cmd --add-port=2377/tcp --permanent
+sudo firewall-cmd --add-port=7946/tcp --permanent
+sudo firewall-cmd --add-port=7946/udp --permanent
+sudo firewall-cmd --add-port=4789/udp –permanent
+sudo firewall-cmd --reload
 
 [*]initialize the docker swarm service
 --------------------------------------
