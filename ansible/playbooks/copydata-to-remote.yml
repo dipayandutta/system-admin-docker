@@ -1,0 +1,11 @@
+---
+- name: copy module demo
+  hosts:  all
+  become: false
+  tasks:
+    - name: copy data.txt
+      ansible.builtin.copy:
+        src:  /data.txt
+        dest: /destination
+        owner:  root
+        mode: '0644'
