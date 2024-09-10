@@ -1,0 +1,13 @@
+---
+- name: fetch module demo
+  hosts:  client2
+  become: false
+  vars:
+    remote_files: /var/log/alternatives.log
+    dump_dir: /playbook/dump_dir
+
+  tasks:
+    - name: fetch logs
+      ansible.builtin.fetch:
+        src:  "{{ remote_files }}"
+        dest: "{{ dump_dir }}"
