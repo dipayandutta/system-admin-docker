@@ -1,0 +1,20 @@
+inside the http (block){
+
+  upstream squidservers{
+
+        server 192.168.60.11:80;
+        server 192.168.60.13:80;
+    }
+just above the server block
+
+
+}
+Now inside the server block
+
+location / {
+                #proxy_pass http://squidservers;
+                root /var/www/html;
+                index index.html;
+                proxy_pass http://squidservers/;
+        }
+
