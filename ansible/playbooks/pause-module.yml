@@ -1,0 +1,14 @@
+---
+- name: pause
+  hosts:  all
+  vars:
+    wait_seconds: 10
+
+  tasks:
+    - name: pause for {{ wait_seconds|int }} seconds
+      ansible.builtin.pause:
+        seconds:  "{{ wait_seconds | int }}"
+
+    - name: message
+      ansible.builtin.debug:
+        msg:  "The end"

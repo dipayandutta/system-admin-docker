@@ -1,0 +1,9 @@
+---
+- name: git module demo
+  hosts: all
+  become: false
+  tasks:
+    - name: checkout git repo
+      ansible.builtin.git:
+        repo: http://github.com/dipayandutta
+        dest: /home/dipayandutta/work

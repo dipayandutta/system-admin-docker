@@ -1,0 +1,12 @@
+---
+- name: linefile module demo
+  hosts:  usa
+  become: true
+  tasks:
+    - name: Allow MaxAuthTries in sshd
+      ansible.builtin.lineinfile:
+        state:  present
+        dest: /etc/ssh/sshd_config
+        regexp: "^MaxAuthTries"
+        line: MaxAuthTries 3
+        validate: 'sshd -t -f %s'
