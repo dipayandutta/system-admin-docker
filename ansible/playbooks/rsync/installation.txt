@@ -1,0 +1,7 @@
+If the error message says that 
+
+could not resole module/action 'ansible.posix.synchronize' Then we have to install the
+package
+
+
+# ansible-galaxy collection install ansible-posix
