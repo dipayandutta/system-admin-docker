@@ -1,0 +1,12 @@
+---
+- name: runscript on a remote server
+  hosts: all
+  remote_user: root
+  become: true
+
+  tasks:
+   - name: transfer the script
+     copy: src=hostname.sh dest=/ mode=077
+
+   - name: execute the script
+     command: bash /hostname.sh 
