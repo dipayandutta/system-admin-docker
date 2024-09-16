@@ -1,0 +1,1 @@
+docker container run -dit --cgroupns=host -v /sys/fs/cgroup/:/sys/fs/cgroup --cap-add SYS_ADMIN -p 82:80  --tmpfs /tmp:exec --tmpfs /run/:exec --network ansiblenetwork --ip 192.168.60.11  --name swarm-worker1 dockercommit/dipayandutta:rocky-systemd-ansibleclient-1
