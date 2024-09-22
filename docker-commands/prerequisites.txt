@@ -1,0 +1,4 @@
+Before proceed to manual installation of docker
+
+install those packages first 
+# yum install -y yum-utils device-mapper-persistent-data lvm2
