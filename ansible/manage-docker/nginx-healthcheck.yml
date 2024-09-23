@@ -1,0 +1,26 @@
+---
+- hosts:  all
+  become: true
+  vars:
+    default_container_name: nginx-httpd 
+    default_container_image:  nginx
+
+  tasks:
+
+    - name: Create nginx container and expose port
+      docker_container:
+        name: nginx-httpd
+        image: nginx
+        state: started
+        network_mode: bridge
+        exposed_ports:
+          - "80"
+        published_ports:
+          - "80:80"
+
+        healthcheck:
+          test: ["CMD","curl","--fail","http://localhost"]
+          interval: 1m30s
+          timeout:  10s
+          retries:  3
+          start_period: 30s
