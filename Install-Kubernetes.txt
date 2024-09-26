@@ -1,0 +1,31 @@
+1  hostnamectl set-hostname master
+    2  hostname
+    3  exit
+    4  sudo -l
+    5  sudo apt-get update && sudo apt-get upgrade -y
+    6  sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+    7  sudo apt-get install docker.io -y
+    8  systemctl status docker.service
+    9  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+   10  sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+   11  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg - dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   12  apt-get install gpg
+   13  sudo mkdir -p -m 755 /etc/apt/keyrings
+   14  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   15  cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+   16  apt-get update
+   17  sudo apt-get install -y kubelet kubeadm kubectl
+   18  cat /etc/os-release 
+   19  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   20  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   21  # Update the repositiries
+   22  sudo apt-get update
+   23  # Use the same versions to avoid issues with the installation.
+   24  sudo apt-get install -y kubelet kubeadm kubectl
+   25  ip a s
+   26  kubeadm init --pod-network-cidr=192.168.11.0/24 -v=9
+   27  kubectl get nodes
+
