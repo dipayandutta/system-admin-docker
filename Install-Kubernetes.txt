@@ -8,14 +8,7 @@
     8  systemctl status docker.service
     9  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
    10  sudo apt-get install -y apt-transport-https ca-certificates curl gpg
-   11  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg - dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-   12  apt-get install gpg
-   13  sudo mkdir -p -m 755 /etc/apt/keyrings
-   14  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-   15  cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-
+    
    16  apt-get update
    17  sudo apt-get install -y kubelet kubeadm kubectl
    18  cat /etc/os-release 
