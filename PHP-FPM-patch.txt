@@ -1,0 +1,20 @@
+vim /usr/lib/systemd/system/php-fpm.service
+User=root
+Group=root
+
+
+/etc/php-fpm.d/www.conf
+
+listen.owner = apache
+listen.group = apache
+listen.mode = 0660
+listen.acl_users =
+
+
+mkdir -p /run/php-fpm/
+touch /run/php-fpm/www.sock
+
+httpd
+php-fpm
+
+use this inside OracleLinux9 container if apache is unable to run php code, and also php-fpm service is not running. (503 Service Unavailable)
