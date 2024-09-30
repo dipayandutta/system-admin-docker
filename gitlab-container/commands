@@ -1,0 +1,60 @@
+[*]create a separate gitlab directory
+--------------------------------------
+mkdir gitlab
+cd gitlab/
+[*]create neccessary directories inside gitlab parent directory
+--------------------------------------------------------------
+mkdir -p $PWD/config $PWD/logs $PWD/data
+ls -ltr
+
+[*] create a separate container network
+---------------------------------------------
+docker network create  git --subnet 192.168.34.0/24
+
+[*]start the gitlab container
+--------------------------------
+docker run --detach  --hostname git.local.in --network git --ip 192.168.34.34 --publish 443:443 --publish 80:80 --publish 22:22  --name gitlab  --restart always  --volume $PWD/config:/etc/gitlab  --volume $PWD/logs:/var/log/gitlab  --volume $PWD/data:/var/opt/gitlab  gitlab/gitlab-ce:latest
+docker ps -a
+
+[*] Start another container with the same git network
+----------------------------------------------------------
+docker container run -dit --name devloperMachine --network git --ip 192.168.34.22 ubuntu:22.04
+docker ps -a
+
+Change the login password of git login page 
+---------------------------------------------
+docker exec -it gitlab bash
+root@git:/# gitlab-rake "gitlab:password:reset"
+
+[*] inside the developerMachine container
+----------------------------------------
+apt update
+apt install vim 
+apt install git
+apt install iputils-ping
+ping 192.168.34.34
+vim /etc/hosts
+  192.168.34.34 git.local.in
+ping git.local.in
+ mkdir test
+cd test/
+touch file1.txt
+git init
+git remote add origin http://git.local.in/developers/test.git
+git branch -M main
+git config user.email "dipayandutta@local.dev"
+git config user.name "dipayandutta"
+git add .
+git commit -m "Test File push"
+git push -uf origin main
+
+
+###############################################
+[*] ERROR TROUBLESHOOTING [*]
+###############################################
+
+! [remote rejected] main -> main (pre-receive hook declined) error: failed to push some refs to
+
+SOLTUON :-> Open your project > Settings > Repository and go to "Protected branches", find "master" branch into the list and click "Unprotect" and try again.
+           (GitLab by default marks master branch as protected)
+           url -> http://192.168.34.34/developers/test/-/settings/repository#js-protected-branches-settings
