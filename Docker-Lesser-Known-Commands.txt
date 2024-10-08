@@ -1,0 +1,21 @@
+Lesser Used docker commands
+--------------------------------
+[+++] Docker Buildkit [+++]
+--------------------------------
+Docker buildkit --> Parallel Processing and Create multiple imtermidate containers ... This will fasten the process of Docker Image creation
+
+DOCKER_BUILDKIT=1 docker build --progress=plain --no-cache -t nginx-original .
+
+[+++] Filter your search only for official image [+++]
+---------------------------------------------------------
+docker search --filter is-official=true mariadb
+
+[+++] Limit Your Search from dokcer hub registry [+++]
+--------------------------------------------------------
+
+docker search --limit 10 mysql
+
+[+++] Format your search [+++]
+--------------------------------
+
+docker search --format "table {{.Name}}\t{{.Description}}\t{{.IsOfficial}}" --limit 10 --no-trunc mysql
