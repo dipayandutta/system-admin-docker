@@ -1,0 +1,1 @@
+docker inspect --format='{{range ,  := .NetworkSettings.Ports}} {{}} -> {{(index  0).HostPort}} {{end}}' ubuntu-vuln
