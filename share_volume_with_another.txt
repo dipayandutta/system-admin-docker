@@ -1,0 +1,9 @@
+share volume with another container
+====================================================
+
+docker plugin install tiborvass/sample-volume-plugin
+docker plugin ls
+docker volume create --driver=tiborvass/sample-volume-plugin --name vol-busybox
+docker container run -dit --name alpha-busy-box --mount type=volume,volume-driver=tiborvass/sample-volume-plugin,source=vol-busybox,destination=/tmp busybox
+/var/lib/docker/plugins/06d44740de0ecd5a8cef2a062d7ac696a5dc3daa38d1852c2a99b9e8a26c8c61/propagated-mount/vol-busybox
+docker run -dit --name beta-busybox --volumes-from alpha-busy-box busybox
