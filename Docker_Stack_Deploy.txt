@@ -1,0 +1,50 @@
+Docker Stack Deploy
+----------------------
+docker swarm init --advertise addr 192.168.56.111
+docker node ls
+
+vim docker-compose.yml
+version:  '3.3'
+
+services:
+  db:
+    image:  mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD:  somepassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    deploy:
+      mode: global
+    networks:
+      stack-network:
+
+  wordpress:
+    depends_on:
+      - db
+    image:  wordpress:latest
+    environment:
+      WORDPRESS_DB_HOST:  db:3306
+      WORDPRESS_DB_USER:  wordpress
+      WORDPRESS_DB_PASSWORD:  wordpress
+      WORDPRESS_DB_NAME:  wordpress
+    ports:
+      - "8080:80"
+    deploy:
+      mode: global
+    networks:
+      stack-network:
+
+volumes:
+  db_data:  {}
+
+networks:
+  stack-network:
+    driver: overlay
+:wq
+
+docker stack deploy --compose-file docker-compose.yml wordpress-mysql
+docker stack ls 
+docker stack services wordpress-mysql
