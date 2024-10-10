@@ -1,0 +1,16 @@
+What is modprobe
+-------------------
+Modprobe is a command-line-based utility in Linux based operating system that helps in removing and adding modules from the kernel. 
+
+
+What is br_netfilter
+------------------------
+ This module is required to enable transparent masquerading and to facilitate Virtual Extensible LAN (VxLAN) traffic for communication between Kubernetes pods across the cluster.
+
+
+Why Disable Swap while installing kubernetes
+---------------------------------------------------
+The idea of kubernetes is to tightly pack instances to as close to 100% utilized as possible. All deployments should be pinned with CPU/memory limits. So if the scheduler sends a pod to a machine it should never use swap at all. You don't want to swap since it'll slow things down.
+
+Its mainly for performance.
+
