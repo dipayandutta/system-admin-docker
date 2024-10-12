@@ -1,0 +1,1 @@
+docker network create --driver bridge --subnet=172.30.0.0/16 --ip-range=172.30.1.0/24 --gateway=172.30.1.254 --label=trail-bridge --opt com.docker.network.driver.mtu=9000 bridge-network
