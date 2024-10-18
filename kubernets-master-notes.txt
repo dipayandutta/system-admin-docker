@@ -1,0 +1,196 @@
+  1  sudo apt update
+    2  sudo apt install build-essential
+    3  sudo su -
+    4  sudo apt update
+    5  sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates containerd socat
+    6  mkdir -p /etc/containerd
+    7  sudo mkdir -p /etc/containerd
+    8  sudo containerd config default | tee /etc/containerd/config.toml
+    9  sudo sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
+   10  sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
+   11  sudo sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
+   12  sudo containerd config default | tee /etc/containerd/config.toml
+   13  containerd config default | tee /etc/containerd/config.toml
+   14  sudo sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
+   15  sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
+   16  cd /etc/containerd/
+   17  ls -ltr
+   18  cd ..
+   19  ls -ltr
+   20  sudo su -
+   21  cd ~
+   22  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   23  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   24  sudo swapoff -a
+   25  sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+   26  sudo apt update
+   27  sudo sudo apt update
+   28  sudo  apt install -y kubelet kubeadm kubectl
+   29  ip a s
+   30  sudo vim /etc/hosts
+   31  ping client1
+   32  ping client2
+   33  sudo kubeadm init --apiserver-advertise-address 192.168.0.112 --pod-network-cidr=192.168.0.0/16
+   34  kubectl get nodes
+   35  watch kubectl get nodes
+   36  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   37  watch kubectl get nodes
+   38  kubectl get nodes
+   39  kubectl get pods --all-namespaces -o wide
+   40  kubectl get nodes
+   41  kubelet version
+   42  which kubelet
+   43  kubectl get nodes
+   44  kubeadm token list
+   45  kubectl get pods -n kube-system
+   46  kubectl get cs
+   47  kubectl get objects
+   48  kubectl get events
+   49  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+   50  kubectl get pods 
+   51  kubectl get pods --all-namepsaces
+   52  kubectl get pods,deploy,svc --all-namespaces -o wide
+   53  kubectl get svc
+   54  kubectl get svc -n kube-system
+   55  kubectl describe svc kubernetes-dashboard -n kube-system
+   56  kubectl get pods --all-namespaces -o wide
+   57  kubectl describe pod kubernets-dashboard -n kube-system
+   58  kubectl describe pod kubernetes-dashboard 
+   59  kubectl describe pod kube-system
+   60  kubectl describe pod kubernetes-dashboard-56cf4b97c5-5zzzk
+   61  kubectl proxy
+   62  git
+   63  git clone https://github.com/schoolofdevops/kube-ops-view
+   64  ls -lt
+   65  cd kube-ops-view/
+   66  ls -ltr
+   67  kubectl apply -f deploy/
+   68  cd deploy/
+   69  ls -ltr
+   70  cat service.yaml 
+   71  cat deployment.yaml 
+   72  cd ~
+   73  kubectl get nodes
+   74  kubectl get pods
+   75  kubectl get svc
+   76  history 
+
+
+get logs of the pods
+-----------------------
+kubectl logs vote 
+kubectl logs -f vote 
+
+get into the pod
+-------------------
+kubectl exec -it vote sh
+
+create the weave network 
+--------------------------------
+
+export kubever=$(kubectl version | base64 | tr -d '\n')
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+
+
+
+ZGlwYXlhbg== USER
+cEBzc3cwcmQ= PASSWORD
+
+-->kubeadm join 192.168.0.112:6443 --token f15gno.dfp5kcn59ohyvbci \
+        --discovery-token-ca-cert-hash sha256:eb447a0af840460154423e5b43cede4ebfb96af9aef16078ae9990a2876a6d8d
+
+
+
+multi-container-pod.yaml
+---------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    tier: front
+    app:  nginx
+    role: ui
+spec:
+  containers:
+    - name: nginx
+      image: nginx:stable-alpine
+      ports:
+        - containerPort:  80
+          protocol: TCP
+      volumeMounts:
+        - name: data
+          mountPath:  /var/www/html-sample-app
+
+    - name: sync
+      image:  schoolofdevops/sync:v2
+      volumeMounts:
+        - name: data
+          mountPath:  /var/www/app
+  volumes:
+    - name: data
+      emptyDir: {}
+
+
+Connecting to individual container
+-------------------------------------
+ kubectl exec -it web sh -c nginx
+ kubectl exec -it web sh -c sync
+
+
+
+create a namespace
+--------------------------
+vim instavote-ns.yaml
+++++++++++++++++++++++++++
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: instavote
+
+list all namespaces
+----------------------
+kubectl get namespace 
+
+Get the current context
+---------------------------
+kubectl config current-context
+
+
+change the namespace 
+--------------------------
+kubectl config set-context $(kubectl config current-context) --namespace=instavote
+
+
+
+ReplicaSet
+------------------
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: vote
+spec:
+  replicas: 5
+  minReadySeconds:  10
+  selector:
+    matchLabels:
+      role: vote
+    matchExpressions:
+      - {key: version, operator:  In, values: [v1,v2,v3]}
+  template:
+    metadata:
+      name: vote
+      labels:
+        app:  python
+        role: vote
+        version:  v1
+    spec:
+      containers:
+        - name: app
+          image:  schoolofdevops/vote:v1
+          ports:
+            - containerPort:  80
+              protocol: TCP
