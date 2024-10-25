@@ -1,0 +1,5 @@
+docker run -f --name registry -p 5000:5000 --restart=always registry
+docker pull busybox
+docker tag busybox:localhost locahost:5000/dipayan
+
+docker push localhost:5000/dipayan
