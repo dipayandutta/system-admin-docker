@@ -1,0 +1,95 @@
+on both servers
+----------------
+add in /etc/hosts
+ip hostname
+
+vim /etc/sshd/sshd_config.d/50-redhat.conf
+
+PermitRootLogin yes
+systemctl restart sshd
+
+ssh-keygen
+ssh-copy-id -i /root/.ssh/id_rsa <IP>
+systemctl restart sshd
+
+ssh node2
+
+
+yum update -y
+
+yum repolist all | grep -i HighAvailability
+
+dnf config-manager --set-enabled rhel-9-for-x86_64-highavailability-rpms
+
+dnf config-manager --set-enabled rhel-9-for-x86_64-highavailability-source-rpms
+
+yum repolist all | grep -i HighAvailability
+yum install pcs pacemaker fence-agents-common
+
+firewall-cmd --permanent --add-service=high-availability
+firewall-cmd --reload
+
+passwd hacluster
+
+systemctl start pcsd
+systemctl enable --now pcsd
+
+pcs host auth node1 node2
+pcs cluster setup --start http_cluster node1 node2
+pcs cluster enable --all
+pcs status 
+
+-----
+yum install fence-agents* -y
+yum install iscsi-initiatior-utils lvm2 
+
+firewall-cmd --permanent --add-port=3260/tcp
+firewall-cmd --reload
+
+pcs cluster status 
+
+yum install fence-virt fence-virtd fence-virtd-libvirt fence-virtd-multicast fence-virtd-serial
+
+mkdir -p /etc/cluster
+dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
+scp /etc/cluster/fence_xvm.key node2:/etc/cluster
+
+fence_virtd -c 
+pcs stonith create fence-node2 fence_xvm plug=node2 pcmk_host_list=<Node2-hostname>
+pcs stonith create fence-node1 fence_xvm plug=node1 pcmk_host_list=<Node1-hostname>
+
+pcs -f stonith_cfg property
+pcs -f stonith_cfg property set stonith-enabled=true
+
+systemctl enable --now fence_virtd
+systemctl status fence_virtd
+
+pcs stonith status 
+
+firewall-cmd --get-active-zones
+firewall-cmd --add-port=1229/udp --permanent --zone=public
+firewall-cmd --add-port=1229/tcp --permanent --zone=public
+firewall-cmd --reload
+firewall-cmd --list-all --zone=public 
+
+
+pcs stonith status
+pcs cluster status 
+
+yum install httpd
+firewall-cmd --permanent --add-service=http
+
+firewall-cmd --reload
+firewall-cmd --list-all
+cd /var/www/html
+vim index.html
+
+
+systemctl restart libvirtd.service
+systemctl status libvirtd.service
+
+pcs status 
+
+
+pcs constraint location A prefers node1=200
+
