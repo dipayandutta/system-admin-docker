@@ -1,0 +1,51 @@
+import telnetlib
+
+password = "put-your-password"
+TIMEOUT = 2
+
+HOST_LIST = ['IP','IP','IP']
+PORT = 23
+
+def hostConnection():
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++")
+    print("------------SWAN Details Check-------------------")
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++")
+    for host in HOST_LIST:
+        telConnect = telnetlib.Telnet(host)
+        telConnect.read_until(b"Password:")
+        telConnect.write(password.encode('ascii')+b"\n")
+        if telConnect:
+
+            data = telConnect.read_until(b"FIN\n",timeout=TIMEOUT).decode('ascii')
+            print(data)
+            print("Connected to IP -> {}".format(host))
+
+            checkVersion(telConnect)
+            listOfRunningMachines(telConnect)
+            ipCheck(telConnect)
+        else:
+            print("Unable to Connect!")
+
+def checkVersion(telConnect):
+    print("Printing hardware Version!")
+    print("---------------------------")
+    telConnect.write(b"sh inv | in Serial#\n".format(PORT))
+    data = telConnect.read_until(b"FIN\n",timeout=TIMEOUT).decode('ascii')
+    print(data)
+
+def listOfRunningMachines(telConnect):
+    print("Printing Running Machines")
+    print("---------------------------")
+    telConnect.write(b"sh arp \n".format(PORT))
+    data = telConnect.read_until(b"FIN\n",timeout=TIMEOUT).decode('ascii')
+    print(data)
+
+def ipCheck(telConnect):
+    print("Printing IP Information...")
+    print("---------------------------")
+    telConnect.write(b"sh run | in 0/9\n".format(PORT))
+    data = telConnect.read_until(b"FIN\n",timeout=TIMEOUT).decode('ascii')
+    print(data)
+
+if __name__ == '__main__':
+    hostConnection()
