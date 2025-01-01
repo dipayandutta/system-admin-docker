@@ -1,0 +1,20 @@
+  buildah from ubi8/ubi:latest
+  buildah images
+  buildah container
+  buildah containers
+  curl -sSL http://ftpmirror.gnu.org/hello/hello-2.10.tar.gz -o hello-2.10.tar.gz
+  ls -ltr
+  buildah copy ubi-working-container hello-2.10.tar.gz /tmp/hello-2.10.tar.gz
+  buildah run ubi-working-container yum install -y tar gcc make gzip vim
+  buildah run ubi-working-container yum clean all
+  buildah run ubi-working-container tar xzvf /tmp/hello-2.10.tar.gz -C /opt
+  buildah config --workingdir /opt/hello-2.10 ubi-working-container
+  buildah run ubi-working-container ./configure
+  buildah run ubi-working-container make
+  buildah run ubi-working-container make install
+  buildah run ubi-working-container hello -v
+  buildah config --entrypoint /usr/local/bin/hello ubi-working-container
+  buildah commit --format docker ubi-working-container hello:v1
+  podman images
+  buildah images
+  podman run -it hello:v1
