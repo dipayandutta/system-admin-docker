@@ -31,6 +31,16 @@ ansible usa-server -m shell -a "free -mh"
 
 ansible canada-server -m shell -a "free -mh"
 
+/*create a file using ansible*/
+----------------------------------
+ansible canada -m command -a "touch /etc/simpletext.txt"
+
+To check the status of a file 
+------------------------------------
+
+ansible canada -m file -a "path=/etc/simpletext.txt state=file"
+
+ansible canada -m file -a "path=/etc/simpletext.txt state=touch"(state=touch this will create a file)
 
 /**simple playbook example**/
 ----------------------------
